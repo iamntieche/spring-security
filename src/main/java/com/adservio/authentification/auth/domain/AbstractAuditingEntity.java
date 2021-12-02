@@ -5,9 +5,13 @@ import java.time.Instant;
 
 import lombok.Data;
 
+import javax.persistence.MappedSuperclass;
 
+
+
+@MappedSuperclass
 @Data
-public class AbstractAuditingEntity implements Serializable{
+public abstract class AbstractAuditingEntity implements Serializable{
 
     private static final long serialVersionUID = 1L;
     private String createdBy;

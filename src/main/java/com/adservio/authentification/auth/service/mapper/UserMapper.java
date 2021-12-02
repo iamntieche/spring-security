@@ -10,7 +10,9 @@ import com.adservio.authentification.auth.domain.AuthorityEntity;
 import com.adservio.authentification.auth.domain.UserEntity;
 import com.adservio.authentification.auth.service.dto.AdminUserDTO;
 import com.adservio.authentification.auth.service.dto.UserDTO;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserMapper {
 
     public List<UserDTO> usersToUserDTOs(List<UserEntity> users) {

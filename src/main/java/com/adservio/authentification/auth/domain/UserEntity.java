@@ -1,6 +1,7 @@
 package com.adservio.authentification.auth.domain;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,7 @@ import java.util.Set;
 import static javax.persistence.GenerationType.IDENTITY;
 
 
-@Getter
-@Setter
+@Data
 @Entity(name = "User")
 @Table(name = "user")
 public class UserEntity extends AbstractAuditingEntity {
