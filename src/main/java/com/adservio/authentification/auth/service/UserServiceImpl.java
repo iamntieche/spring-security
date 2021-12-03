@@ -7,18 +7,18 @@ import java.util.Optional;
 
 import com.adservio.authentification.auth.domain.UserEntity;
 import com.adservio.authentification.auth.repository.UserRepository;
-import com.adservio.authentification.auth.service.dto.UserDTO;
 import com.adservio.authentification.auth.service.mapper.UserMapper;
 import com.adservio.authentification.auth.util.RandomUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//private final PasswordEncoder passwordEncoder;
+
 
 @Service
 @Transactional
@@ -98,18 +98,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public long count() {
-        return userRepository.count();
+    public int count() {
+        return (int) userRepository.count();
     }
 
 
 
-/*    @Override
+    @Override
     @Transactional(readOnly = true)
-    public Page<UserDTO> getAllManagedUser(String anonymousUser) {
+    public Page<UserEntity> getAllManagedUser(String anonymousUser, Pageable pageable) {
 
-        return Page.of(userRepository.findAllByLoginNot(anonymousUser));
-    }*/
+        return userRepository.findAllByLoginNot(anonymousUser, pageable);
+    }
 
 
 }

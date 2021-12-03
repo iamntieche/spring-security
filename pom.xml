@@ -15,8 +15,11 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<spring-social-google.version>1.0.0.RELEASE</spring-social-google.version>
 		<validation-api.version>1.1.0.Final</validation-api.version>
 		<hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
+		<spring-social-facebook.version>2.0.3.RELEASE</spring-social-facebook.version>
+		<spring-social-twitter.version>1.1.2.RELEASE</spring-social-twitter.version>
 	</properties>
 	<dependencies>
 		<!--<dependency>
@@ -39,6 +42,32 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+		<!-- social -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-security -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-security</artifactId>
+			<version>1.1.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-google</artifactId>
+			<version>${spring-social-google.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>${spring-social-facebook.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-twitter</artifactId>
+			<version>${spring-social-twitter.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

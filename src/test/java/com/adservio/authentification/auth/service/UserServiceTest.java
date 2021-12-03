@@ -8,14 +8,14 @@ import com.adservio.authentification.auth.IntegrationTest;
 import com.adservio.authentification.auth.config.Constants;
 import com.adservio.authentification.auth.domain.UserEntity;
 
-import com.adservio.authentification.auth.service.dto.UserDTO;
 import com.adservio.authentification.auth.util.RandomUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -134,18 +134,18 @@ public class UserServiceTest {
         assertThat(users).isEmpty();
     }
 
-/*    @Test
-    @Disabled
+    @Test
     public  void assertThatAnonymousUserIsNotGet(){
         user.setLogin(Constants.ANONYMOUS_USER);
         if(!userService.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()){
             userService.saveUser(user);
         }
-        final Page<UserDTO> users = userService.getAllManagedUser(user.getLogin());
+        final Pageable pageable = PageRequest.of(0, userService.count());
+        final Page<UserEntity> users = userService.getAllManagedUser(user.getLogin(),pageable);
         assertThat(users.getContent().stream()
                 .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
                 .isTrue();
-    }*/
+    }
 
     @Test
     @Transactional

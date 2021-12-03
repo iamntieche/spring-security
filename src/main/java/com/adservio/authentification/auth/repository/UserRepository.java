@@ -7,6 +7,8 @@ import java.util.Optional;
 import com.adservio.authentification.auth.domain.UserEntity;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +23,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findOneByLogin(String login);
 
-   // Page<UserEntity> findAllByLoginNot(String login);
+   Page<UserEntity> findAllByLoginNot(String login, Pageable pageable);
 }

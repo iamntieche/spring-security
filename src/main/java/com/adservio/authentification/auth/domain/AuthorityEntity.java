@@ -15,6 +15,12 @@ import javax.persistence.Table;
 public class AuthorityEntity implements Serializable {
      @Id
     private String name;
+
+     public AuthorityEntity() {}
+    public AuthorityEntity(String authority) {
+        this.name = authority;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

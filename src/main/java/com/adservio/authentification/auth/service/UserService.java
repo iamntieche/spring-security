@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.adservio.authentification.auth.domain.UserEntity;
-import com.adservio.authentification.auth.service.dto.UserDTO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
     Optional<UserEntity> requestPasswordReset(String email);
@@ -22,7 +21,7 @@ public interface UserService {
 
     Optional<UserEntity> findOneByLogin(String anonymousUser);
 
-    long count();
+    int count();
 
-   // Page<UserDTO> getAllManagedUser(String anonymousUser);
+    Page<UserEntity> getAllManagedUser(String anonymousUser, Pageable pageable);
 }

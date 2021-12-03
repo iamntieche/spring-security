@@ -44,7 +44,7 @@ public class UserMapperTest {
     @Test
     void userToUserDTOShouldOnlyNonNull(){
         //given
-        UserDTO newUserDto = new UserDTO();
+        UserDTO newUserDto;
         //when
         newUserDto = userMapper.userToUserDTO(user);
         //then
@@ -55,7 +55,7 @@ public class UserMapperTest {
     @Test
     void userDtoToUserShouldOnlyNonNull(){
         //given
-        UserEntity user1 = new UserEntity();
+        UserEntity user1;
         //when
         user1 = userMapper.userDtoToUser(userDto);
         //then
