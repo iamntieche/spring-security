@@ -32,6 +32,7 @@ public class UserEntity extends AbstractAuditingEntity {
     private String resetKey;
     private Instant resetDate = null;
 
+    //un commentaire
     @ManyToMany
      private Set<AuthorityEntity> authorities = new HashSet<>();
 
