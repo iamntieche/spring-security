@@ -13,6 +13,9 @@ import com.adservio.authentification.auth.service.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 @Service
+/**
+ * Class user mapper
+ */
 public class UserMapper {
 
     public List<UserDTO> usersToUserDTOs(List<UserEntity> users) {
