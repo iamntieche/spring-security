@@ -3,15 +3,12 @@ package com.adservio.authentification.auth.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.adservio.authentification.auth.util.TestUtil;
-
 import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
     @Test
-    void equalsVerifier() throws Exception{
-        TestUtil.equalsVerifier(UserEntity.class);
+    void equalsVerifier(){
         UserEntity user1 = new UserEntity();
         user1.setId(1L);
         UserEntity user2 = new UserEntity();
