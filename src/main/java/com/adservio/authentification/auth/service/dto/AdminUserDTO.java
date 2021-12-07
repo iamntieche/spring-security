@@ -10,7 +10,7 @@ import com.adservio.authentification.auth.domain.UserEntity;
 import lombok.Data;
 
 @Data
-public class AdminUserDTO {
+public class AdminUserDTO extends UserDTO {
 
     private Long id;
     private String login;

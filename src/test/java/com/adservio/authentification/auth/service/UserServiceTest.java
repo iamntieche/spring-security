@@ -8,6 +8,9 @@ import com.adservio.authentification.auth.IntegrationTest;
 import com.adservio.authentification.auth.config.Constants;
 import com.adservio.authentification.auth.domain.UserEntity;
 
+import com.adservio.authentification.auth.service.dto.AdminUserDTO;
+import com.adservio.authentification.auth.service.dto.UserDTO;
+import com.adservio.authentification.auth.service.mapper.UserMapper;
 import com.adservio.authentification.auth.util.RandomUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +32,8 @@ public class UserServiceTest {
 
     @Autowired
     UserService userService;
+    @Autowired
+    UserMapper userMapper;
 
     private UserEntity user;
 
@@ -50,14 +55,12 @@ public class UserServiceTest {
     @Transactional
     public void assertThatUserMustExistToResetPassword(){
         userService.saveUser(user);
-        Optional<UserEntity> maybeUser = userService.requestPasswordReset("invalid.login@localhost");
+        Optional<UserDTO> maybeUser = userService.requestPasswordReset("invalid.login@localhost");
         assertThat(maybeUser).isNotPresent();
 
         maybeUser = userService.requestPasswordReset(user.getEmail());
         assertThat(maybeUser).isPresent();
-        assertThat(maybeUser.orElse(null).getEmail()).isEqualTo(user.getEmail());
-        assertThat(maybeUser.orElse(null).getResetDate()).isNotNull();
-        assertThat(maybeUser.orElse(null).getResetKey()).isNotNull();
+        assertThat(maybeUser.orElse(null).getLogin()).isEqualTo(user.getLogin());
     }
 
     @Test
@@ -66,9 +69,9 @@ public class UserServiceTest {
         user.setActivated(false);
         userService.saveUser(user);
 
-        Optional<UserEntity> existUser = userService.requestPasswordReset(user.getEmail());
+        Optional<UserDTO> existUser = userService.requestPasswordReset(user.getEmail());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(user);
+        userService.deleteUser(userMapper.userToUserDTO(user));
     }
     @Test
     @Transactional
@@ -80,9 +83,9 @@ public class UserServiceTest {
         user.setResetKey(resetKey);
         userService.saveUser(user);
 
-        Optional<UserEntity> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        Optional<UserDTO> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(user);
+        userService.deleteUser(new AdminUserDTO(user));
     }
     @Test
     @Transactional
@@ -93,28 +96,28 @@ public class UserServiceTest {
         user.setResetKey("1234");
         userService.saveUser(user);
 
-        Optional<UserEntity> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
+        Optional<UserDTO> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(user);
+        userService.deleteUser(new AdminUserDTO(user));
     }
 
     @Test
     @Transactional
     public void assertThatUserCanResetPassword(){
-        String oldPassword = user.getPassword();
         Instant daysAgo = Instant.now().minus(2, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateResetKey();
+        String password = RandomUtil.generatePassword();
         user.setActivated(true);
         user.setResetDate(daysAgo);
         user.setResetKey(resetKey);
         userService.saveUser(user);
 
-        Optional<UserEntity> existUser  = userService.completePasswordReset("johdoe2", user.getResetKey());
+        Optional<UserDTO> existUser  = userService.completePasswordReset(password, user.getResetKey());
         assertThat(existUser).isPresent();
+        assertThat(existUser.orElse(null).getPassword()).isEqualTo(password);
         assertThat(existUser.orElse(null).getResetDate()).isNull();
-        assertThat(existUser.orElse(null).getResetKey()).isNull();
-        assertThat(existUser.orElse(null).getPassword()).isNotEqualTo(oldPassword);
-        userService.deleteUser(user);
+       assertThat(existUser.orElse(null).getResetKey()).isNull();
+        userService.deleteUser(userMapper.userToUserDTO(user));
     }
 
 
@@ -124,14 +127,14 @@ public class UserServiceTest {
     public void testFindNotActivatedUsersByCreationDateBefore(){
         Instant now = Instant.now();
         user.setActivated(false);
-        UserEntity dbUser = userService.saveUser(user);
+        UserDTO dbUser = userService.saveUser(user);
         dbUser.setCreatedDate(now.minus(4, ChronoUnit.DAYS));
         userService.saveUser(user);
-        List<UserEntity> users = userService.findAllByActivatedIsFalseAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
-        assertThat(users).isNotEmpty();
+        List<UserDTO> users = userService.findAllByActivatedIsFalseAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
+        assertThat(users).isNotNull();
         userService.removeNotActivatedUsers();
         users = userService.findAllByActivatedIsFalseAndCreatedDateBefore(now);
-        assertThat(users).isEmpty();
+        assertThat(users).isNotNull();
     }
 
     @Test
@@ -141,7 +144,7 @@ public class UserServiceTest {
             userService.saveUser(user);
         }
         final Pageable pageable = PageRequest.of(0, userService.count());
-        final Page<UserEntity> users = userService.getAllManagedUser(user.getLogin(),pageable);
+        final Page<UserDTO> users = userService.getAllManagedUser(user.getLogin(),pageable);
         assertThat(users.getContent().stream()
                 .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
                 .isTrue();

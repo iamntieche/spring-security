@@ -5,23 +5,24 @@ import java.util.List;
 import java.util.Optional;
 
 import com.adservio.authentification.auth.domain.UserEntity;
+import com.adservio.authentification.auth.service.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
-    Optional<UserEntity> requestPasswordReset(String email);
-    UserEntity saveUser(UserEntity user);
-    void deleteUser(UserEntity user);
+    Optional<UserDTO> requestPasswordReset(String email);
+    UserDTO saveUser(UserEntity user);
+    void deleteUser(UserDTO user);
 
-    Optional<UserEntity> completePasswordReset(String newPassword, String resetKey);
+    Optional<UserDTO> completePasswordReset(String newPassword, String resetKey);
 
-    List<UserEntity> findAllByActivatedIsFalseAndCreatedDateBefore(Instant createdDate);
+    List<UserDTO> findAllByActivatedIsFalseAndCreatedDateBefore(Instant createdDate);
 
     void removeNotActivatedUsers();
 
-    Optional<UserEntity> findOneByLogin(String anonymousUser);
+    Optional<UserDTO> findOneByLogin(String anonymousUser);
 
     int count();
 
-    Page<UserEntity> getAllManagedUser(String anonymousUser, Pageable pageable);
+    Page<UserDTO> getAllManagedUser(String anonymousUser, Pageable pageable);
 }
