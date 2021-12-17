@@ -32,7 +32,7 @@ pipeline{
                 sh 'mvn clean install'
             }
         }
-        stage('Docker - Build'){
+        stage('Docker - Build '){
             steps{
                 script{
                     docker build . -t mfoumgroup\spring-security:Docker_tag

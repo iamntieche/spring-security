@@ -6,3 +6,9 @@ spring:
     driver-class-name: org.h2.Driver
   jpa.spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
+authenticationProps:
+    jwt:
+      secret-key: @1secret-key-jwt!17122021@
+      base64-secret: QDFzZWNyZXQta2V5LWp3dCExNzEyMjAyMUA=
+      token-validity-in-secondes: 86400
+     token-validity-in-secondes-for-remenber-me: 2592000; // 30 days
