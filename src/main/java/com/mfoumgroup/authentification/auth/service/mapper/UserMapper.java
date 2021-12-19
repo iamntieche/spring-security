@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import com.mfoumgroup.authentification.auth.domain.AuthorityEntity;
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
-import com.mfoumgroup.authentification.auth.service.dto.AdminUserDTO;
 import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class UserMapper {
      return new UserDTO(user);
     }
 
-    public UserEntity userDtoToUser(AdminUserDTO userDTO) {
+    public UserEntity userDtoToUser(UserDTO userDTO) {
         if(userDTO == null){
             return null;
         }
@@ -34,13 +33,13 @@ public class UserMapper {
             user.setLastName(userDTO.getLastName());
             user.setEmail(userDTO.getEmail());
             user.setImageUrl(userDTO.getImageUrl());
-            user.setActivated(userDTO.isActivated());
+            user.setActivated(userDTO.getActivated());
             user.setLangKey(userDTO.getLangKey());
             user.setAuthorities(authoritiesFromStrings(userDTO.getAuthorities()));
          return user;   
     }
 
-    public List<UserEntity> usersDtoToUsers(List<AdminUserDTO> userDTOs) {
+    public List<UserEntity> usersDtoToUsers(List<UserDTO> userDTOs) {
         return userDTOs.stream().filter(Objects::nonNull).map(this::userDtoToUser).collect(Collectors.toList());
     }
 

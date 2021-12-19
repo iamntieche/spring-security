@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mfoumgroup.authentification.auth.IntegrationTest;
-import com.mfoumgroup.authentification.auth.config.Constants;
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
 
-import com.mfoumgroup.authentification.auth.service.dto.AdminUserDTO;
 import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
 import com.mfoumgroup.authentification.auth.service.mapper.UserMapper;
 import com.mfoumgroup.authentification.auth.util.RandomUtil;
@@ -26,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Test class for the UserResource Rest Controller
  */
-@Transactional
 @IntegrationTest
 public class UserServiceTest {
 
@@ -85,7 +82,7 @@ public class UserServiceTest {
 
         Optional<UserDTO> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(new AdminUserDTO(user));
+        userService.deleteUser(new UserDTO(user));
     }
     @Test
     @Transactional
@@ -98,7 +95,7 @@ public class UserServiceTest {
 
         Optional<UserDTO> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(new AdminUserDTO(user));
+        userService.deleteUser(new UserDTO(user));
     }
 
     @Test
@@ -139,14 +136,15 @@ public class UserServiceTest {
 
     @Test
     public  void assertThatAnonymousUserIsNotGet(){
-        user.setLogin(Constants.ANONYMOUS_USER);
-        if(!userService.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()){
+        String anonymous = "anonymous";
+        user.setLogin("Anonymous");
+        if(!userService.findOneByLogin(anonymous).isPresent()){
             userService.saveUser(user);
         }
         final Pageable pageable = PageRequest.of(0, userService.count());
         final Page<UserDTO> users = userService.getAllManagedUser(user.getLogin(),pageable);
         assertThat(users.getContent().stream()
-                .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
+                .noneMatch(user -> anonymous.equals(user.getLogin())))
                 .isTrue();
     }
 

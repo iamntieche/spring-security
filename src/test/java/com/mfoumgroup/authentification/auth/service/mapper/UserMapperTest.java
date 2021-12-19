@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
-import com.mfoumgroup.authentification.auth.service.dto.AdminUserDTO;
 import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -21,7 +20,7 @@ public class UserMapperTest {
 
     private UserMapper userMapper;
     private UserEntity user;
-    private AdminUserDTO userDto;
+    private UserDTO userDto;
 
     @BeforeEach
     public void init(){
@@ -38,7 +37,7 @@ public class UserMapperTest {
         user.setImageUrl("image_url");
         user.setLangKey("en");
 
-        userDto = new AdminUserDTO(user);
+        userDto = new UserDTO(user);
     }
 
     @Test
@@ -78,7 +77,7 @@ public class UserMapperTest {
     @Test
     void usersDtoToUsersShouldMapOnlyNonNullUsers(){
         //given
-        List<AdminUserDTO> userDTOs = new ArrayList<>();
+        List<UserDTO> userDTOs = new ArrayList<>();
         userDTOs.add(userDto);
         userDTOs.add(null);
         //when
@@ -92,7 +91,7 @@ public class UserMapperTest {
         Set<String> authoritiesAsString = new HashSet<>();
         authoritiesAsString.add("ADMIN");
         userDto.setAuthorities(authoritiesAsString);
-        List<AdminUserDTO> usersDto = new ArrayList<>();
+        List<UserDTO> usersDto = new ArrayList<>();
         usersDto.add(userDto);
         //when
         List<UserEntity> users = userMapper.usersDtoToUsers(usersDto);
@@ -107,7 +106,7 @@ public class UserMapperTest {
     void userDtosToUsersMapWithNullAuthoritiesStringShouldReturnUserWithEmptyAuthorities(){
         userDto.setAuthorities(null);
 
-        List<AdminUserDTO> usersDto = new ArrayList<>();
+        List<UserDTO> usersDto = new ArrayList<>();
         usersDto.add(userDto);
 
         List<UserEntity> users = userMapper.usersDtoToUsers(usersDto);

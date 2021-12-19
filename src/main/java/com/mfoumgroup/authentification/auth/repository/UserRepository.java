@@ -15,7 +15,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    
+
+    String USERS_BY_LOGIN_CACHE = "usersByLogin";
+
+    String USERS_BY_EMAIL_CACHE = "usersByEmail";
     
     Optional<UserEntity> findOneByEmailIgnoreCase(String email);
 

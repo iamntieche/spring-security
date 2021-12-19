@@ -1,5 +1,6 @@
 package com.mfoumgroup.authentification.auth.service.dto;
 
+import com.mfoumgroup.authentification.auth.domain.AuthorityEntity;
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
 
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.Instant;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -28,6 +31,7 @@ public class UserDTO {
     private Instant createdDate;
     private String lastModifiedBy;
     private Instant lastModifiedDate;
+    private Set<String> authorities;
 
     public UserDTO (UserEntity user){
         this.id = user.getId();
@@ -45,5 +49,7 @@ public class UserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.password = user.getPassword();
+        this.authorities = user.getAuthorities().stream().map(AuthorityEntity::getName).collect(Collectors.toSet());
+
     }
 }

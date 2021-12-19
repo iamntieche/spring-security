@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final AuthProperties authProperties;
     private final TokenProvider tokenProvider;
 
-    private static final String contentSecurityPolicy = "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:";
+    private static final String contentSecurityPolicy = "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:";
 
     @Autowired
     private UserDetailsService userDetailsService;

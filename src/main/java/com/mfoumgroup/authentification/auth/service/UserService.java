@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
 import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
+import com.mfoumgroup.authentification.auth.web.rest.ManagedUserVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,4 +26,10 @@ public interface UserService {
     int count();
 
     Page<UserDTO> getAllManagedUser(String anonymousUser, Pageable pageable);
+
+    UserEntity createUser(UserDTO user);
+
+    Optional<UserEntity> getUserWithAuthorities();
+
+    UserDTO registerUser(ManagedUserVM managedUserVM, String password);
 }
