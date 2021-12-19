@@ -8,7 +8,7 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.adservio.authentification</groupId>
+	<groupId>com.mfoumgroup.authentification</groupId>
 	<artifactId>auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -19,8 +19,22 @@
 		<validation-api.version>1.1.0.Final</validation-api.version>
 		<hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
 		<jwt.servion>0.11.2</jwt.servion>
+		<commons-validator>1.6</commons-validator>
 	</properties>
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${commons-validator}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.zalando/problem-spring-web -->
+		<dependency>
+			<groupId>org.zalando</groupId>
+			<artifactId>problem-spring-web</artifactId>
+			<version>0.27.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
