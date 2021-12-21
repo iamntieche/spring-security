@@ -8,21 +8,21 @@ import java.util.stream.Collectors;
 import com.mfoumgroup.authentification.auth.domain.AuthorityEntity;
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
 import com.mfoumgroup.authentification.auth.exception.EmailAlreadyUsedException;
-import com.mfoumgroup.authentification.auth.exception.UsernameAlreadyUsedException;
+import com.mfoumgroup.authentification.auth.exception.InvalidPasswordException;
+import com.mfoumgroup.authentification.auth.exception.LoginAlreadyUsedException;
 import com.mfoumgroup.authentification.auth.repository.AuthorityRepository;
 import com.mfoumgroup.authentification.auth.repository.UserRepository;
 import com.mfoumgroup.authentification.auth.security.SecurityUtils;
-import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
-import com.mfoumgroup.authentification.auth.service.mapper.UserMapper;
+import com.mfoumgroup.authentification.auth.dto.UserDTO;
+import com.mfoumgroup.authentification.auth.mapper.UserMapper;
 import com.mfoumgroup.authentification.auth.util.AuthoritiesConstants;
 import com.mfoumgroup.authentification.auth.util.ConstantsUtils;
 import com.mfoumgroup.authentification.auth.util.RandomUtil;
 
 
-import com.mfoumgroup.authentification.auth.web.rest.ManagedUserVM;
+import com.mfoumgroup.authentification.auth.dto.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -69,8 +69,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteUser(UserDTO user) {
-        userRepository.deleteById(user.getId());
+    public void deleteUser(String login) {
+        userRepository
+                .findOneByLogin(login)
+                .ifPresent(user -> {
+                    userRepository.delete(user);
+                    log.debug("Deleted User: {}", user);
+                });
     }
 
     @Override
@@ -128,7 +133,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserEntity createUser(UserDTO userDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
         UserEntity user = new UserEntity();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
@@ -160,7 +165,7 @@ public class UserServiceImpl implements UserService{
         }
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
-        return user;
+        return userMapper.userToUserDTO(user);
     }
 
     @Override
@@ -169,15 +174,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDTO registerUser(ManagedUserVM userDTO, String password) {
+    public UserDTO registerUser(ManagedUserVM userDTO) {
         userRepository
                 .findOneByLogin(userDTO.getLogin().toLowerCase())
                 .ifPresent(existingUser -> {
                     boolean removed = removeNonActivatedUser(existingUser);
                     if (!removed) {
-                        throw new UsernameAlreadyUsedException();
+                        throw new LoginAlreadyUsedException();
                     }
                 });
+
         userRepository
                 .findOneByEmailIgnoreCase(userDTO.getEmail())
                 .ifPresent(existingUser -> {
@@ -187,7 +193,7 @@ public class UserServiceImpl implements UserService{
                     }
                 });
         UserEntity newUser = new UserEntity();
-        String encryptedPassword = passwordEncoder.encode(password);
+        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
         newUser.setLogin(userDTO.getLogin().toLowerCase());
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
@@ -211,8 +217,107 @@ public class UserServiceImpl implements UserService{
         return userMapper.userToUserDTO(newUser);
     }
 
+    @Override
+    public Optional<UserDTO> updateUser(UserDTO userDTO) {
+        return Optional
+                .of(userRepository.findById(userDTO.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(user -> {
+                    user.setLogin(userDTO.getLogin().toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    if (userDTO.getEmail() != null) {
+                        user.setEmail(userDTO.getEmail().toLowerCase());
+                    }
+                    user.setImageUrl(userDTO.getImageUrl());
+                    user.setActivated(userDTO.getActivated());
+                    user.setLangKey(userDTO.getLangKey());
+                    Set<AuthorityEntity> managedAuthorities = user.getAuthorities();
+                    managedAuthorities.clear();
+                    userDTO
+                            .getAuthorities()
+                            .stream()
+                            .map(authorityRepository::findById)
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .forEach(managedAuthorities::add);
+                    log.debug("Changed Information for User: {}", user);
+                    return user;
+                })
+                .map(UserDTO::new);
+    }
+
+    @Override
+    public Optional<UserDTO> activateRegistration(String key) {
+        log.debug("Activating user for activation key {}", key);
+        return userRepository
+                .findOneByActivationKey(key)
+                .map(user -> {
+                    // activate given user for the registration key.
+                    user.setActivated(true);
+                    user.setActivationKey(null);
+                    log.debug("Activated user: {}", user);
+                    return user;
+                }).map(UserDTO::new);
+    }
+
+    @Override
+    public void changePassword(String currentPassword, String newPassword) {
+        SecurityUtils
+                .getCurrentUserLogin()
+                .flatMap(userRepository::findOneByLogin)
+                .ifPresent(user -> {
+                    String currentEncryptedPassword = user.getPassword();
+                    if (!passwordEncoder.matches(currentPassword, currentEncryptedPassword)) {
+                        throw new InvalidPasswordException();
+                    }
+                    String encryptedPassword = passwordEncoder.encode(newPassword);
+                    user.setPassword(encryptedPassword);
+                    userRepository.save(user);
+                    log.debug("Changed password for User: {}", user);
+                });
+    }
+
+    @Override
+    public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(UserDTO::new);
+    }
+
+    @Override
+    public Optional<UserEntity> getUserWithAuthoritiesByLogin(String login) {
+        return userRepository.findOneWithAuthoritiesByLogin(login);
+    }
+
+    /**
+     * Update basic information (first name, last name, email, language) for the current user.
+     *
+     * @param firstName first name of user.
+     * @param lastName  last name of user.
+     * @param email     email id of user.
+     * @param langKey   language key.
+     * @param imageUrl  image URL of user.
+     */
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+        SecurityUtils
+                .getCurrentUserLogin()
+                .flatMap(userRepository::findOneByLogin)
+                .ifPresent(user -> {
+                    user.setFirstName(firstName);
+                    user.setLastName(lastName);
+                    if (email != null) {
+                        user.setEmail(email.toLowerCase());
+                    }
+                    user.setLangKey(langKey);
+                    user.setImageUrl(imageUrl);
+                    userRepository.save(user);
+                    log.debug("Changed Information for User: {}", user);
+                });
+    }
+
+
     private boolean removeNonActivatedUser(UserEntity existingUser) {
-        if (existingUser.getActivated()== true) {
+        if (existingUser.getActivated() == true) {
             return false;
         }
         userRepository.delete(existingUser);

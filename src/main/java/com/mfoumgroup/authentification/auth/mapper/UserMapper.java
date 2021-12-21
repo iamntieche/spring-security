@@ -1,4 +1,4 @@
-package com.mfoumgroup.authentification.auth.service.mapper;
+package com.mfoumgroup.authentification.auth.mapper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import com.mfoumgroup.authentification.auth.domain.AuthorityEntity;
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
-import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
+import com.mfoumgroup.authentification.auth.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 @Service

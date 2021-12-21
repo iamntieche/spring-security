@@ -1,7 +1,8 @@
-package com.mfoumgroup.authentification.auth.web.rest;
+package com.mfoumgroup.authentification.auth.dto;
 
-import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
+import com.mfoumgroup.authentification.auth.dto.UserDTO;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class ManagedUserVM extends UserDTO {
@@ -9,6 +10,7 @@ public class ManagedUserVM extends UserDTO {
 
     public static final int PASSWORD_MAX_LENGTH = 100;
 
+    @NotNull
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 

@@ -14,12 +14,15 @@
 	<packaging>war</packaging>
 	<name>auth</name>
 	<description>Demo project for Spring Boot</description>
+
 	<properties>
 		<java.version>17</java.version>
-		<validation-api.version>1.1.0.Final</validation-api.version>
-		<hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
 		<jwt.servion>0.11.2</jwt.servion>
-		<commons-validator>1.6</commons-validator>
+		<commons-validator.version>1.7</commons-validator.version>
+		<zalando.version>0.27.0</zalando.version>
+		<social-login.version>1.1.6.RELEASE</social-login.version>
+		<assertj.version>3.21.0</assertj.version>
+		<arch-unit.version>0.22.0</arch-unit.version>
 	</properties>
 	<dependencies>
 
@@ -27,25 +30,20 @@
 		<dependency>
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
-			<version>${commons-validator}</version>
+			<version>${commons-validator.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.zalando/problem-spring-web -->
 		<dependency>
 			<groupId>org.zalando</groupId>
 			<artifactId>problem-spring-web</artifactId>
-			<version>0.27.0</version>
+			<version>${zalando.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate-validator.version}</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,7 +60,7 @@
 		<dependency>
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-security</artifactId>
-			<version>1.1.6.RELEASE</version>
+			<version>${social-login.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -75,11 +73,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>javax.persistence-api</artifactId>
-		</dependency>
+
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -91,15 +85,12 @@
 	<dependency>
 		<groupId>org.assertj</groupId>
 		<artifactId>assertj-core</artifactId>
-		<version>3.21.0</version>
+		<version>${assertj.version}</version>
 	</dependency>
-
-	<dependency>
-		<groupId>javax.validation</groupId>
-		<artifactId>validation-api</artifactId>
-		<version>${validation-api.version}</version>
-	</dependency>
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -146,12 +137,15 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-data</artifactId>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.tngtech.archunit/archunit -->
 		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-			<version>RELEASE</version>
-			<scope>compile</scope>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit</artifactId>
+			<version>${arch-unit.version}</version>
 		</dependency>
+
+
 	</dependencies>
 
 	<build>

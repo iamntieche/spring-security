@@ -1,4 +1,4 @@
-package com.mfoumgroup.authentification.auth.service.dto;
+package com.mfoumgroup.authentification.auth.dto;
 
 import com.mfoumgroup.authentification.auth.domain.SocialUserConnectionEntity;
 

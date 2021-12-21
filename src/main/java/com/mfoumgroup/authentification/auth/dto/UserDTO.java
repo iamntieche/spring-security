@@ -1,12 +1,19 @@
-package com.mfoumgroup.authentification.auth.service.dto;
+package com.mfoumgroup.authentification.auth.dto;
 
 import com.mfoumgroup.authentification.auth.domain.AuthorityEntity;
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
 
+import com.mfoumgroup.authentification.auth.util.ConstantsUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
+import javax.persistence.Column;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,12 +23,21 @@ import java.util.stream.Collectors;
 @ToString
 public class UserDTO {
     private Long id;
+    @NotBlank
+    @Pattern(regexp = ConstantsUtils.LOGIN_REGEX)
+    @Size(min = 1, max = 50)
     private String login;
     private String password;
+    @Size(max = 50)
     private String firstName;
+    @Size(max = 50)
     private String lastName;
+    @Email
+    @Size(min = 5, max = 254)
     private String email;
+    @Column(nullable = false)
     private Boolean activated;
+    @Size(min = 2, max = 10)
     private String langKey;
     private String imageUrl;
     private String activationKey;

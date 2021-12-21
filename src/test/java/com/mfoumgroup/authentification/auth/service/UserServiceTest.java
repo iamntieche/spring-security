@@ -7,8 +7,8 @@ import java.util.Optional;
 import com.mfoumgroup.authentification.auth.IntegrationTest;
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
 
-import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
-import com.mfoumgroup.authentification.auth.service.mapper.UserMapper;
+import com.mfoumgroup.authentification.auth.dto.UserDTO;
+import com.mfoumgroup.authentification.auth.mapper.UserMapper;
 import com.mfoumgroup.authentification.auth.util.RandomUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +68,7 @@ public class UserServiceTest {
 
         Optional<UserDTO> existUser = userService.requestPasswordReset(user.getEmail());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(userMapper.userToUserDTO(user));
+        userService.deleteUser(user.getLogin());
     }
     @Test
     @Transactional
@@ -82,7 +82,7 @@ public class UserServiceTest {
 
         Optional<UserDTO> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(new UserDTO(user));
+        userService.deleteUser(user.getLogin());
     }
     @Test
     @Transactional
@@ -95,7 +95,7 @@ public class UserServiceTest {
 
         Optional<UserDTO> existUser = userService.completePasswordReset("johndoe2", user.getResetKey());
         assertThat(existUser).isNotPresent();
-        userService.deleteUser(new UserDTO(user));
+        userService.deleteUser(user.getLogin());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class UserServiceTest {
         assertThat(existUser.orElse(null).getPassword()).isEqualTo(password);
         assertThat(existUser.orElse(null).getResetDate()).isNull();
        assertThat(existUser.orElse(null).getResetKey()).isNull();
-        userService.deleteUser(userMapper.userToUserDTO(user));
+        userService.deleteUser(user.getLogin());
     }
 
 

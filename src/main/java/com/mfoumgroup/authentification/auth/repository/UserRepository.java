@@ -32,4 +32,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findOneWithAuthoritiesByEmailIgnoreCase(String email);
 
     Optional<UserEntity> findOneWithAuthoritiesByLogin(String login);
+
+    Optional<UserEntity> findOneByActivationKey(String activationKey);
 }

@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.mfoumgroup.authentification.auth.domain.UserEntity;
-import com.mfoumgroup.authentification.auth.service.dto.UserDTO;
+import com.mfoumgroup.authentification.auth.dto.UserDTO;
 
+import com.mfoumgroup.authentification.auth.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
