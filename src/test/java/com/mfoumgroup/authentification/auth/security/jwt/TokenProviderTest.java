@@ -25,7 +25,7 @@ import java.util.Date;
 public class TokenProviderTest {
     private static final long ONE_MINUTE = 60000;
     private TokenProvider tokenProvider;
-    private Key key;
+
 
     @BeforeEach
     public void setup(){
@@ -35,7 +35,6 @@ public class TokenProviderTest {
         authProperties.getJwt().setSecretKey(secretKey);
         authProperties.getJwt().setBase64Secret(base64Secret);
         tokenProvider = new TokenProvider(authProperties);
-        ReflectionTestUtils.setField(tokenProvider, "key", key);
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInSeconds", ONE_MINUTE);
 
     }
@@ -62,9 +61,8 @@ public class TokenProviderTest {
    }
    @Test
    void testReturnFalseWhenJWTisExpired(){
-        ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", -ONE_MINUTE);
+        ReflectionTestUtils.setField(tokenProvider, "tokenValidityInSeconds", -ONE_MINUTE);
         Authentication  authentication = createAuthentication();
-
         String token = tokenProvider.createToken(authentication, false);
         boolean isTokenVlid = tokenProvider.validateToken(token);
 
@@ -73,9 +71,7 @@ public class TokenProviderTest {
     @Test
    void testReturnFalseWhenJWTisUnsupported(){
         String unsupportedToken = createUnsupportedToken();
-
         boolean isTokenValid = tokenProvider.validateToken(unsupportedToken);
-
         assertThat(isTokenValid).isFalse();
    }
    @Test
@@ -106,7 +102,10 @@ public class TokenProviderTest {
         assertThat(key).isNotNull().isEqualTo(Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(base64Secret)));
    }
     private String createUnsupportedToken() {
-        return Jwts.builder().setPayload("payload").signWith(key, SignatureAlgorithm.HS512).compact();
+        Key ortherKey = Keys.hmacShaKeyFor(
+                Decoders.BASE64.decode("Bfd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8")
+        );
+        return Jwts.builder().setPayload("payload").signWith(ortherKey, SignatureAlgorithm.HS512).compact();
     }
 
     private Authentication createAuthentication() {

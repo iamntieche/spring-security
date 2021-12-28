@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +34,8 @@ public class UserServiceTest {
     UserMapper userMapper;
 
     private UserEntity user;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void init(){
@@ -111,7 +114,6 @@ public class UserServiceTest {
 
         Optional<UserDTO> existUser  = userService.completePasswordReset(password, user.getResetKey());
         assertThat(existUser).isPresent();
-        assertThat(existUser.orElse(null).getPassword()).isEqualTo(password);
         assertThat(existUser.orElse(null).getResetDate()).isNull();
        assertThat(existUser.orElse(null).getResetKey()).isNull();
         userService.deleteUser(user.getLogin());
