@@ -33,7 +33,7 @@ pipeline{
             }
         }
         stage('Docker - Build '){
-           /* steps{
+            steps{
                 script{
                     docker build . -t mfoumgroup\spring-security:Docker_tag
                     withCredentials([string(credentialsId: 'docker_password', variable: 'docker_hub_mfoumgroup')]) {
@@ -42,7 +42,7 @@ pipeline{
                     }
 
                 }
-            }*/
+            }
         }
     }
 }
