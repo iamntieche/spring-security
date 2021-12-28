@@ -4,8 +4,7 @@ import com.mfoumgroup.authentification.auth.constant.AuthoritiesConstants;
 import com.mfoumgroup.authentification.auth.security.configuration.AuthProperties;
 import com.mfoumgroup.authentification.auth.security.jwt.JWTConfigurer;
 import com.mfoumgroup.authentification.auth.security.jwt.TokenProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,9 +27,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final  Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
-
-    private final AuthProperties authProperties;
+    public final AuthProperties authProperties;
     private final TokenProvider tokenProvider;
 
     private static final String contentSecurityPolicy = "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:";

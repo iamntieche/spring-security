@@ -4,6 +4,7 @@ package com.mfoumgroup.authentification.auth.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mfoumgroup.authentification.auth.util.ConstantsUtils;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import java.io.Serializable;
+ 
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @Entity(name = "User")
 @Table(name = "user")
-public class UserEntity extends AbstractAuditingEntity implements Serializable {
+@ToString
+public class UserEntity extends AbstractAuditingEntity  {
 
     public static final long serialVersionUID = 1L;
 

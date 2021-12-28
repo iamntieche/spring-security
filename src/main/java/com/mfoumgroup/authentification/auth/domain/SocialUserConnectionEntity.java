@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -16,7 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity(name = "SocialUserConnection")
 @Table(name = "socialUserConnection")
 @ToString
-public class SocialUserConnectionEntity extends  AbstractAuditingEntity implements Serializable {
+public class SocialUserConnectionEntity extends  AbstractAuditingEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;

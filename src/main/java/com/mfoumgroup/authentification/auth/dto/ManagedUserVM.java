@@ -1,6 +1,6 @@
 package com.mfoumgroup.authentification.auth.dto;
 
-import com.mfoumgroup.authentification.auth.dto.UserDTO;
+
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
