@@ -1,7 +1,15 @@
+def getDockerTag(){
+    def tag = sh script: 'git rev-parse HEAD', returnStdout:true
+    return tag
+}
+
 pipeline{
     agent any
     tools {
         maven 'Maven'
+    }
+    environment{
+        Docker_tag = getDockerTag();
     }
     stages{
         stage('Quality Gate Status check'){
@@ -19,10 +27,22 @@ pipeline{
                 }
             }
         }
-        stage('Maven - Build'){
+        stage('Maven - Clean'){
             steps{
                 sh 'mvn clean install'
             }
+        }
+        stage('Docker - Build '){
+           /* steps{
+                script{
+                    docker build . -t mfoumgroup\spring-security:Docker_tag
+                    withCredentials([string(credentialsId: 'docker_password', variable: 'docker_hub_mfoumgroup')]) {
+                         docker login -u mfoumgroup -p $docker_hub_mfoumgroup
+                         docker push mfoumgroup\spring-security:Docker_tag
+                    }
+
+                }
+            }*/
         }
     }
 }
