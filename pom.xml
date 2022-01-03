@@ -23,6 +23,10 @@
 		<social-login.version>1.1.6.RELEASE</social-login.version>
 		<assertj.version>3.21.0</assertj.version>
 		<arch-unit.version>0.22.0</arch-unit.version>
+		<sonar.host.url>http://157.230.124.61:8088/</sonar.host.url>
+		<sonar.log.level>DEBUG</sonar.log.level>
+		<sonar.verbose>true</sonar.verbose>
+		<sonar.coverage.exclusions>**/*.js</sonar.coverage.exclusions>
 	</properties>
 	<dependencies>
 
