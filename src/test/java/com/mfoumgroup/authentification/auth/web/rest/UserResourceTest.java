@@ -341,7 +341,7 @@ public class UserResourceTest {
     @Test
     @Transactional
     void updateUserExistingEmail() throws Exception {
-        // Initialize the database with 2 users
+
         userRepository.saveAndFlush(user);
 
         UserEntity anotherUser = new UserEntity();

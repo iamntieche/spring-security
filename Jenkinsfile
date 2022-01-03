@@ -4,19 +4,20 @@ def getDockerTag(){
 }
 
 pipeline{
-    agent any
-    tools {
-        maven 'Maven'
-    }
-    environment{
-        Docker_tag = getDockerTag();
-    }
-    stages{
+        agent any
+        tools {
+            maven 'Maven'
+        }
+        environment{
+            Docker_tag = getDockerTag();
+        }
+    stages
+    {
         stage('Quality Gate Status check'){
             steps{
                 script{
                     withSonarQubeEnv(credentialsId: 'sonarQubeServer') {
-                        sh "mvn sonar:sonar"
+                        sh "mvn clean sonar:sonar"
                     }
                      timeout(time: 1, unit: 'HOURS') {
                          def qg = waitForQualityGate()
@@ -32,7 +33,7 @@ pipeline{
                 sh 'mvn clean install'
             }
         }
-        stage('Docker - Build '){
+        /*stage('Docker - Build '){
             steps{
                 script{
                     docker build . -t mfoumgroup\spring-security:Docker_tag
@@ -43,6 +44,6 @@ pipeline{
 
                 }
             }
-        }
+        }*/
     }
 }
