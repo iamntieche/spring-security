@@ -23,10 +23,11 @@
 		<social-login.version>1.1.6.RELEASE</social-login.version>
 		<assertj.version>3.21.0</assertj.version>
 		<arch-unit.version>0.22.0</arch-unit.version>
-		<sonar.host.url>http://157.230.124.61:9090/</sonar.host.url>
-		<sonar.log.level>DEBUG</sonar.log.level>
-		<sonar.verbose>true</sonar.verbose>
-		<sonar.coverage.exclusions>**/*.js</sonar.coverage.exclusions>
+		<sonar.host.url>http://157.230.124.61:9090</sonar.host.url>
+		<sonar.login>admin</sonar.login>
+		<sonar.password>mfoumgroup</sonar.password>
+		<sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
 	</properties>
 	<dependencies>
 
@@ -161,6 +162,28 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>${properties-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>sonar-project.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
@@ -172,11 +195,16 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>${sonar-maven-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>
