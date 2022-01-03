@@ -4,14 +4,15 @@ def getDockerTag(){
 }
 
 pipeline{
-    agent any
-    tools {
-        maven 'Maven'
-    }
-    environment{
-        Docker_tag = getDockerTag();
-    }
-    stages{
+        agent any
+        tools {
+            maven 'Maven'
+        }
+        environment{
+            Docker_tag = getDockerTag();
+        }
+    stages
+    {
         stage('Quality Gate Status check'){
             steps{
                 script{
@@ -42,7 +43,7 @@ pipeline{
                     }
 
                 }
-            }*/
-        }
+            }
+        }*/
     }
 }
