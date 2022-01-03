@@ -31,9 +31,10 @@ public class UserServiceTest {
     @Autowired
     UserService userService;
     @Autowired
-    UserMapper userMapper;
+    protected UserMapper userMapper;
 
     private UserEntity user;
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -140,7 +141,7 @@ public class UserServiceTest {
     public  void assertThatAnonymousUserIsNotGet(){
         String anonymous = "anonymous";
         user.setLogin("Anonymous");
-        if(!userService.findOneByLogin(anonymous).isPresent()){
+        if(userService.findOneByLogin(anonymous).isEmpty()){
             userService.saveUser(user);
         }
         final Pageable pageable = PageRequest.of(0, userService.count());
