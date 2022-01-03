@@ -37,7 +37,7 @@ pipeline{
         stage('Docker - Build '){
             steps{
                 script{
-                   sh 'docker build . -t mfoumgroup\spring-security:Docker_tag'
+                   sh 'docker build  -t mfoumgroup\spring-security:Docker_tag . '
                     withCredentials([string(credentialsId: 'docker_password', variable: 'docker_hub_mfoumgroup')]) {
                        sh '''  docker login -u mfoumgroup -p $docker_hub_mfoumgroup
                          docker push mfoumgroup\spring-security:Docker_tag
