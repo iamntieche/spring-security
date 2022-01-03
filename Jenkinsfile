@@ -34,11 +34,19 @@ pipeline{
             }
         }
         stage('Docker - Build '){
+            agent {
+                    docker {
+                        image 'gradle:6.7-jdk11'
+                        // Run the container on the node specified at the top-level of the Pipeline, in the same workspace, rather than on a new node entirely:
+                        reuseNode true
+                    }
+                }
             steps{
                 script{
-                   sh 'docker build  -t mfoumgroup/spring-security:Docker_tag . '
                     withCredentials([string(credentialsId: 'docker_password', variable: 'docker_hub_mfoumgroup')]) {
-                       sh '''  docker login -u mfoumgroup -p $docker_hub_mfoumgroup
+                       sh '''
+                         docker build  -t mfoumgroup/spring-security:Docker_tag .
+                         docker login -u mfoumgroup -p $docker_hub_mfoumgroup
                          docker push mfoumgroup/spring-security:Docker_tag
                          '''
                     }
