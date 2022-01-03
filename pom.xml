@@ -24,8 +24,6 @@
 		<assertj.version>3.21.0</assertj.version>
 		<arch-unit.version>0.22.0</arch-unit.version>
 		<sonar.host.url>http://157.230.124.61:9090</sonar.host.url>
-		<!--<sonar.login>admin</sonar.login>
-		<sonar.password>mfoumgroup</sonar.password>-->
 		<sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
 		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
 	</properties>
