@@ -33,6 +33,7 @@ pipeline{
                 sh 'mvn clean install'
             }
         }
+        /** docker stage*/
         /*stage('Docker - Build '){
             steps{
                 script{
