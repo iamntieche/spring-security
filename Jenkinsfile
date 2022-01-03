@@ -34,7 +34,7 @@ pipeline{
             }
         }
         /** docker stage*/
-        /*stage('Docker - Build '){
+        stage('Docker - Build '){
             steps{
                 script{
                     docker build . -t mfoumgroup\spring-security:Docker_tag
@@ -45,6 +45,6 @@ pipeline{
 
                 }
             }
-        }*/
+        }
     }
 }
