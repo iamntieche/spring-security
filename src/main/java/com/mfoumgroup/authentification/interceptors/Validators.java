@@ -28,7 +28,8 @@ public class Validators {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, Map<String, String>> handleValidationUnprocessableEntityExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errorsFields = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> errorsFields.put(((FieldError) error).getField(), error.getDefaultMessage()));
+        ex.getBindingResult().getAllErrors().
+                forEach(error -> errorsFields.put(((FieldError) error).getField(), error.getDefaultMessage()));
         Map<String, Map<String, String>> errors = new HashMap<>();
         errors.put(ERRORS, errorsFields);
         return errors;
@@ -41,7 +42,7 @@ public class Validators {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, Map<String, String>> handleValidationBadRequestEntityExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errorsFields = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> errorsFields.put(((FieldError) error).getField(), error.getDefaultMessage()));
+        ex.getBindingResult().getAllErrors().forEach(error -> errorsFields.put(((FieldError) error).getField(), error.getDefaultMessage()));
         Map<String, Map<String, String>> errors = new HashMap<>();
         errors.put(ERRORS, errorsFields);
         return errors;
