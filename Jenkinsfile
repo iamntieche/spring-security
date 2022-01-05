@@ -13,18 +13,25 @@ pipeline{
         }
     stages
     {
-        stage('Quality Gate Status check'){
+        stage('Sonar analyse'){
             steps{
                 script{
                     withSonarQubeEnv(credentialsId: 'sonarQubeServer') {
-                        sh "mvn  -Dsonar.sources=src/main/java/ -Dsonar.java.binaries=target sonar:sonar"
+                        sh "mvn clean package -Dsonar.sources=src/main/java/ -Dsonar.java.binaries=target sonar:sonar"
                     }
-                     timeout(time: 1, unit: 'HOURS') {
-                         def qg = waitForQualityGate()
-                         if (qg.status != 'OK') {
-                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                         }
+
+                }
+            }
+        }
+        stage('Quality Gate Status check'){
+            steps{
+                script{
+                timeout(time: 1, unit: 'HOURS') {
+                    def qg = waitForQualityGate()
+                    if (qg.status != 'OK') {
+                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
                     }
+                }
                 }
             }
         }
