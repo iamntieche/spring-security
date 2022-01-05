@@ -2,29 +2,31 @@ package com.mfoumgroup.authentification.auth.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.zalando.problem.AbstractThrowableProblem;
-import org.zalando.problem.Status;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class BadRequestAlertException extends AbstractThrowableProblem {
+public class BadRequestAlertException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private final String entityName;
 
     private final String errorKey;
+    private final URI type;
+
+    private final String defaultMessage;
 
     public BadRequestAlertException(String defaultMessage, String entityName, String errorKey) {
         this(ErrorConstants.DEFAULT_TYPE, defaultMessage, entityName, errorKey);
     }
 
     public BadRequestAlertException(URI type, String defaultMessage, String entityName, String errorKey) {
-        super(type, defaultMessage, Status.BAD_REQUEST, null, null, null, getAlertParameters(entityName, errorKey));
         this.entityName = entityName;
         this.errorKey = errorKey;
+        this.type = type;
+        this.defaultMessage = defaultMessage;
     }
 
     public String getEntityName() {
