@@ -33,7 +33,7 @@ pipeline{
                 sh 'mvn clean install'
             }
         }
-        stage('Docker - Build '){
+        /*stage('Docker - Build '){
             steps{
                 script{
                     withCredentials([string(credentialsId: 'docker_password', variable: 'docker_hub_mfoumgroup')]) {
@@ -46,6 +46,6 @@ pipeline{
 
                 }
             }
-        }
+        }*/
     }
 }
