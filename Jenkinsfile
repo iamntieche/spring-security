@@ -13,7 +13,7 @@ pipeline{
         }
     stages
     {
-        stage('Sonar analyse'){
+        stage('Sonar Analyse'){
             steps{
                 script{
                     withSonarQubeEnv(credentialsId: 'sonarQubeServer') {

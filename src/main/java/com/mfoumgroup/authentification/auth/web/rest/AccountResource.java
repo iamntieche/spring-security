@@ -74,10 +74,9 @@ public class AccountResource {
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDTO> registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
        UserDTO user = userService.registerUser(managedUserVM);
-       return new ResponseEntity<>(user, HttpStatus.OK);
+       return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     /**
