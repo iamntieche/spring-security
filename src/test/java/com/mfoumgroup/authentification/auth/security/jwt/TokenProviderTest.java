@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class TokenProviderTest {
+class TokenProviderTest {
     private static final long ONE_MINUTE = 60000;
     private TokenProvider tokenProvider;
 

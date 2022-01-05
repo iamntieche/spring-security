@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 
 public class SecurityUtils {
 
+      private SecurityUtils () {}
+
     /**
      * Get the login of the current user
      */
@@ -26,7 +28,7 @@ public class SecurityUtils {
             return null;
         }else if(authentication.getPrincipal() instanceof UserDetails springSecurityUser){
             return springSecurityUser.getUsername();
-        }else if(authentication.getPrincipal() instanceof String){
+        }else if(authentication.getPrincipal() instanceof String string){
             return (String) authentication.getPrincipal();
         }
         return null;

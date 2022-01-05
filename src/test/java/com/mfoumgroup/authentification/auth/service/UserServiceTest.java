@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Test class for the UserResource Rest Controller
  */
 @IntegrationTest
-public class UserServiceTest {
+class UserServiceTest {
 
     @Autowired
     UserService userService;
@@ -54,7 +54,7 @@ public class UserServiceTest {
     
     @Test
     @Transactional
-    public void assertThatUserMustExistToResetPassword(){
+     void assertThatUserMustExistToResetPassword(){
         userService.saveUser(user);
         Optional<UserDTO> maybeUser = userService.requestPasswordReset("invalid.login@localhost");
         assertThat(maybeUser).isNotPresent();
@@ -66,7 +66,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void assertThatOnlyActivatedUserCanRequestPasswordReset(){
+     void assertThatOnlyActivatedUserCanRequestPasswordReset(){
         user.setActivated(false);
         userService.saveUser(user);
 
@@ -76,7 +76,7 @@ public class UserServiceTest {
     }
     @Test
     @Transactional
-    public void assertThatResetKeyMustNotBeOlderThan24Hours(){
+     void assertThatResetKeyMustNotBeOlderThan24Hours(){
         Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateResetKey();
         user.setActivated(true);
@@ -90,7 +90,7 @@ public class UserServiceTest {
     }
     @Test
     @Transactional
-    public void assertThatKeyMustBeValid(){
+     void assertThatKeyMustBeValid(){
         Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
         user.setActivated(true);
         user.setResetDate(daysAgo);
@@ -104,7 +104,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void assertThatUserCanResetPassword(){
+     void assertThatUserCanResetPassword(){
         Instant daysAgo = Instant.now().minus(2, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateResetKey();
         String password = RandomUtil.generatePassword();
@@ -124,7 +124,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testFindNotActivatedUsersByCreationDateBefore(){
+     void testFindNotActivatedUsersByCreationDateBefore(){
         Instant now = Instant.now();
         user.setActivated(false);
         UserDTO dbUser = userService.saveUser(user);
@@ -138,7 +138,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public  void assertThatAnonymousUserIsNotGet(){
+    void assertThatAnonymousUserIsNotGet(){
         String anonymous = "anonymous";
         user.setLogin("Anonymous");
         if(userService.findOneByLogin(anonymous).isEmpty()){
@@ -153,7 +153,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testRemoveNotActivatedUsers() {
+    void testRemoveNotActivatedUsers() {
         user.setActivated(false);
         userService.saveUser(user);
         // Let the audit first set the creation date but then update it

@@ -38,7 +38,7 @@ import java.util.function.Consumer;
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @IntegrationTest
-public class UserResourceTest {
+class UserResourceTest {
     private static final String DEFAULT_LOGIN = "johndoe";
     private static final String UPDATED_LOGIN = "jhipster";
 

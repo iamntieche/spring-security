@@ -69,7 +69,8 @@ public class UserResource {
         this.userRepository = userRepository;
     }
 
-    //private final MailService mailService;
+
+
 
     /**
      * {@code POST  /admin/users}  : Creates a new user.
@@ -97,7 +98,7 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             UserDTO newUser = userService.createUser(userDTO);
-            //mailService.sendCreationEmail(newUser);
+            log.info("send information for user created");
             return ResponseEntity
                     .created(new URI("/api/admin/users/" + newUser.getLogin()))
                     .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", newUser.getLogin()))
@@ -127,7 +128,7 @@ public class UserResource {
             throw new LoginAlreadyUsedException();
         }
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
-        return  new ResponseEntity<UserDTO>(updatedUser.get(),HttpStatus.OK);
+        return  new ResponseEntity<>(updatedUser.get(),HttpStatus.OK);
     }
 
     /**

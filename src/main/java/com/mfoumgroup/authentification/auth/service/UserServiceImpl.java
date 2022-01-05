@@ -317,7 +317,7 @@ public class UserServiceImpl implements UserService{
 
 
     private boolean removeNonActivatedUser(UserEntity existingUser) {
-        if (existingUser.getActivated() == true) {
+        if (existingUser.getActivated()) {
             return false;
         }
         userRepository.delete(existingUser);

@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class TokenProvider {
@@ -92,11 +93,9 @@ public class TokenProvider {
 
     public Authentication getAuthentication(String token){
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
-        Collection<? extends GrantedAuthority> authorities = Arrays
-                .stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                .filter(auth -> !auth.trim().isEmpty())
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities = Stream.of(claims.get(AUTHORITIES_KEY).toString().split(","))
+                                                            .filter(auth -> !auth.trim().isEmpty())
+                                                            .map(SimpleGrantedAuthority::new).toList();
         User principal = new User(claims.getSubject(), "", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);

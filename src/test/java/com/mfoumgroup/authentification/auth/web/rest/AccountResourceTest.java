@@ -17,6 +17,8 @@ import com.mfoumgroup.authentification.auth.util.ConstantsUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
@@ -40,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @IntegrationTest
 @WithMockUser(value = TEST_USER_LOGIN)
-public class AccountResourceTest {
+class AccountResourceTest {
     static final String TEST_USER_LOGIN = "testuser";
 
     @Autowired
@@ -168,7 +170,8 @@ public class AccountResourceTest {
         assertThat(user).isEmpty();
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({"email, invalid","password, 123","password, null"})
     @Transactional
     void testRegisterInvalidEmail() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
@@ -190,50 +193,6 @@ public class AccountResourceTest {
         assertThat(user).isEmpty();
     }
 
-
-    @Test
-    @Transactional
-    void testRegisterInvalidPassword() throws Exception {
-        ManagedUserVM invalidUser = new ManagedUserVM();
-        invalidUser.setLogin("bob");
-        invalidUser.setPassword("123"); // password with only 3 digits
-        invalidUser.setFirstName("Bob");
-        invalidUser.setLastName("Green");
-        invalidUser.setEmail("bob@example.com");
-        invalidUser.setActivated(true);
-        invalidUser.setImageUrl("http://placehold.it/50x50");
-        invalidUser.setLangKey(ConstantsUtils.DEFAULT_LANGUAGE);
-        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
-
-        restAccountMockMvc
-                .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(invalidUser)))
-                .andExpect(status().isBadRequest());
-
-        Optional<UserEntity> user = userRepository.findOneByLogin("bob");
-        assertThat(user).isEmpty();
-    }
-
-    @Test
-    @Transactional
-    void testRegisterNullPassword() throws Exception {
-        ManagedUserVM invalidUser = new ManagedUserVM();
-        invalidUser.setLogin("bob");
-        invalidUser.setPassword(null); // invalid null password
-        invalidUser.setFirstName("Bob");
-        invalidUser.setLastName("Green");
-        invalidUser.setEmail("bob@example.com");
-        invalidUser.setActivated(true);
-        invalidUser.setImageUrl("http://placehold.it/50x50");
-        invalidUser.setLangKey(ConstantsUtils.DEFAULT_LANGUAGE);
-        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
-
-        restAccountMockMvc
-                .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(invalidUser)))
-                .andExpect(status().isBadRequest());
-
-        Optional<UserEntity> user = userRepository.findOneByLogin("bob");
-        assertThat(user).isEmpty();
-    }
 
 
     @Test

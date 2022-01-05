@@ -12,6 +12,7 @@ import com.mfoumgroup.authentification.auth.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,6 @@ public class AccountResource {
     private final UserService userService;
 
     /**
-     * TODO add private final MailService mailService in constructor;
      * @param userRepository
      * @param userService
      */
@@ -75,8 +75,9 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity<UserDTO> registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
        UserDTO user = userService.registerUser(managedUserVM);
+       return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     /**
@@ -88,7 +89,7 @@ public class AccountResource {
     @GetMapping("/activate")
     public void activateAccount(@RequestParam(value = "key") String key) {
         Optional<UserDTO> user = userService.activateRegistration(key);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
     }
@@ -111,13 +112,13 @@ public class AccountResource {
     @PostMapping(path = "/account/reset-password/init")
     public void requestPasswordReset(@RequestBody String mail) {
         Optional<UserDTO> user = userService.requestPasswordReset(mail);
-        if (user.isPresent()) {
-            //mailService.sendPasswordResetMail(user.get());
-        } else {
-            // Pretend the request has been successful to prevent checking which emails really exist
-            // but log that an invalid attempt has been made
+        if(user.isEmpty()){
             log.warn("Password reset requested for non existing mail");
+        }else{
+            log.info("send mail request");
         }
+
+
     }
 
     /**
@@ -132,7 +133,7 @@ public class AccountResource {
 
         Optional<UserDTO> user = userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey());
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this reset key");
         }
     }
@@ -154,7 +155,7 @@ public class AccountResource {
             throw new EmailAlreadyUsedException();
         }
         Optional<UserEntity> user = userRepository.findOneByLogin(userLogin);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("User could not be found");
         }
         userService.updateUser(

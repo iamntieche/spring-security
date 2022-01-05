@@ -20,7 +20,7 @@ import java.util.Optional;
 /**
  * Test class for the {@link} utility class.
  */
-public class SecurityUtilsUnitTest {
+class SecurityUtilsUnitTest {
 
     @BeforeEach
     @AfterEach

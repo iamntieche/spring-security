@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @IntegrationTest
-public class DomainUserDetailsServiceITTest {
+class DomainUserDetailsServiceITTest {
 
     private static final String USER_ONE_LOGIN = "test-user-one";
     private static final String USER_ONE_EMAIL = "test-user-one@localhost";
@@ -67,7 +67,7 @@ public class DomainUserDetailsServiceITTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("to do later")
     void assertThatUserCanBeFoundByLogin() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN);
         assertThat(userDetails).isNotNull();
@@ -75,7 +75,7 @@ public class DomainUserDetailsServiceITTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("to do later")
     void assertThatUserCanBeFoundByLoginIgnoreCase() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN.toUpperCase(Locale.ENGLISH));
         assertThat(userDetails).isNotNull();

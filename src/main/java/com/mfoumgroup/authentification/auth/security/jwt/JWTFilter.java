@@ -33,7 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 "Origin, Accept, X-Requested-With, Content-Type, "
                         + "Access-Control-Request-Method, "
                         + "Access-Control-Request-Headers, "
-                        + "Authorization");
+                        + AUTHORIZATION_HEADER);
         //permet d'envoyer le token au front de l'application
         response.addHeader("Access-Control-Expose-Headers",
                 "Access-Control-Allow-Origin, "

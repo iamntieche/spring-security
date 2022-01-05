@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.emptyString;
@@ -21,7 +22,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 @AutoConfigureMockMvc
 @IntegrationTest
-public class UserJWTControllerTest {
+class UserJWTControllerTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -53,5 +54,7 @@ public class UserJWTControllerTest {
                 .andExpect(jsonPath("$.id_token").isNotEmpty())
                 .andExpect(header().string("Authorization", not(nullValue())))
                 .andExpect(header().string("Authorization", not(is(emptyString()))));
+
+        assertThat(login.getUsername()).isEqualTo("user-jwt-controller");
     }
 }
