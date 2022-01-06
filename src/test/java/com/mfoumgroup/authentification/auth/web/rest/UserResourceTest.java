@@ -241,6 +241,8 @@ class UserResourceTest {
                 .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
                 .andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
 
+        assertThat(user.getId()).isNotNull();
+
       }
 
     @Test
@@ -379,6 +381,8 @@ class UserResourceTest {
                         put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
                 )
                 .andExpect(status().isBadRequest());
+
+        assertThat(user.getEmail()).isNotNull();
     }
 
     @Test
@@ -422,6 +426,7 @@ class UserResourceTest {
                         put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
                 )
                 .andExpect(status().isBadRequest());
+        assertThat(user.getLogin()).isNotNull();
     }
 
     @Test

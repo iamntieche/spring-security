@@ -4,7 +4,8 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 public class RandomUtil {
-    private static final int DEF_COUNT = 32;
+    private static final int DEF_COUNT = 20;
+    private static final int DEF_PASS = 10;
     static SecureRandom random = new SecureRandom();
     private RandomUtil() {
     }
@@ -15,7 +16,7 @@ public class RandomUtil {
      * @return the generated password
      */
     public static String generatePassword() {
-        return generateSecureString(6);
+        return generateSecureString(DEF_PASS);
     }
 
     /**
@@ -29,9 +30,8 @@ public class RandomUtil {
 
 
     public static String generateSecureString(int length){
-        byte bytes[] = new byte[length];
+        byte[] bytes = new byte[length];
         random.nextBytes(bytes);
-       // Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         return Base64.getEncoder().encodeToString(bytes);
     }
 }

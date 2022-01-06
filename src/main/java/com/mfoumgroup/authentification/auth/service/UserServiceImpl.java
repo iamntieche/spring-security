@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService{
         } else {
             user.setLangKey(userDTO.getLangKey());
         }
-        String encryptedPassword = encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        String encryptedPassword =  passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateKey());
         user.setResetDate(Instant.now());

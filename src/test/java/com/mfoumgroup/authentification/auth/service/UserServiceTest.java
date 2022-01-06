@@ -115,6 +115,7 @@ class UserServiceTest {
         Instant daysAgo = Instant.now().minus(2, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateKey();
         String password = RandomUtil.generatePassword();
+        System.err.println(password);
         user.setActivated(true);
         user.setResetDate(daysAgo);
         user.setResetKey(resetKey);
