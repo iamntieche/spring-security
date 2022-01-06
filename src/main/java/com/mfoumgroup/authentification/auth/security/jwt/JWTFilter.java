@@ -28,14 +28,14 @@ public class JWTFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         //resolution probleme de CORS partie front office
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Headers",
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers",
                 "Origin, Accept, X-Requested-With, Content-Type, "
                         + "Access-Control-Request-Method, "
                         + "Access-Control-Request-Headers, "
                         + AUTHORIZATION_HEADER);
         //permet d'envoyer le token au front de l'application
-        response.addHeader("Access-Control-Expose-Headers",
+        response.setHeader("Access-Control-Expose-Headers",
                 "Access-Control-Allow-Origin, "
                         + "Access-Control-Allow-Credentials, Authorization");
         String jwt = resolveToken(request);
