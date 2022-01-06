@@ -1,10 +1,11 @@
 package com.mfoumgroup.authentification.auth.util;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class RandomUtil {
-    private static final int DEF_COUNT = 20;
-
+    private static final int DEF_COUNT = 32;
+    static SecureRandom random = new SecureRandom();
     private RandomUtil() {
     }
 
@@ -14,7 +15,7 @@ public class RandomUtil {
      * @return the generated password
      */
     public static String generatePassword() {
-        return RandomStringUtils.randomAlphanumeric(DEF_COUNT);
+        return generateSecureString(6);
     }
 
     /**
@@ -22,16 +23,15 @@ public class RandomUtil {
      *
      * @return the generated activation key
      */
-    public static String generateActivationKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT);
+    public static String generateKey() {
+        return generateSecureString(DEF_COUNT);
     }
 
-    /**
-    * Generate a reset key.
-    *
-    * @return the generated reset key
-    */
-    public static String generateResetKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT);
+
+    public static String generateSecureString(int length){
+        byte bytes[] = new byte[length];
+        random.nextBytes(bytes);
+       // Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        return Base64.getEncoder().encodeToString(bytes);
     }
 }

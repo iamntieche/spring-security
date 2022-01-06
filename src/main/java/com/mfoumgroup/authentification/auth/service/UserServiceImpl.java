@@ -1,5 +1,6 @@
 package com.mfoumgroup.authentification.auth.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.findOneByEmailIgnoreCase(email)
         .filter(UserEntity::getActivated)
         .map(user -> {
-            user.setResetKey(RandomUtil.generateResetKey());
+            user.setResetKey(RandomUtil.generateKey());
             user.setResetDate(Instant.now());
             log.debug("email {} ",email);
             return user;
@@ -147,9 +148,9 @@ public class UserServiceImpl implements UserService{
         } else {
             user.setLangKey(userDTO.getLangKey());
         }
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        String encryptedPassword = encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
-        user.setResetKey(RandomUtil.generateResetKey());
+        user.setResetKey(RandomUtil.generateKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
 
@@ -207,7 +208,7 @@ public class UserServiceImpl implements UserService{
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        newUser.setActivationKey(RandomUtil.generateKey());
         Set<AuthorityEntity> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
